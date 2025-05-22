@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的收藏站 - 知识管理与灵感收集</title>
+    <title>收藏站 - 知识管理</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -12,87 +12,73 @@
 
 <body>
     <!-- 顶部导航 -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="header-left">
-                    <h1 class="site-title">
-                        <i class="fa-solid fa-bookmark text-blue-500 mr-2"></i>F8の收藏站
+    <header class="hd">
+        <div class="cntr">
+            <div class="hd-cnt">
+                <div class="hd-lft">
+                    <h1 class="st">
+                        <i class="fa-solid fa-bookmark text-blue-500 mr-2"></i>收藏站
                     </h1>
-                    <p class="site-subtitle">整理你的数字灵感库，高效管理知识碎片</p>
+                    <p class="sbt">整理灵感，管理知识</p>
                 </div>
 
-                <div class="search-container">
-                    <div class="search-wrapper">
-                        <i class="fa-solid fa-search search-icon"></i>
-                        <input type="text" id="search-input" class="search-input" placeholder="搜索收藏内容..."
-                            autocomplete="off">
-                        <div class="search-options">
+                <div class="sch-cnt">
+                    <div class="sch-wrap">
+                        <i class="fa-solid fa-search sch-icn"></i>
+                        <input type="text" id="sch-inp" class="sch-inp" placeholder="搜索收藏..." autocomplete="off">
+                        <div class="sch-opt">
                             <i class="fa-solid fa-magnifying-glass-chart"></i>
                         </div>
                     </div>
-                    <div id="search-suggestions" class="search-suggestions hidden"></div>
+                    <div id="sch-sugg" class="sch-sugg hidden"></div>
                 </div>
             </div>
         </div>
     </header>
 
     <!-- 主内容区 -->
-    <main class="main-content container">
+    <main class="mc cntr">
         <!-- 筛选标签 -->
-        <div class="filter-container">
-            <div class="filter-tags">
-                <button class="filter-btn active" data-filter="全部">全部</button>
+        <div class="flt-cnt">
+            <div class="flt-tags">
+                <button class="flt-btn active" data-filter="全部">全部</button>
                 <!-- 标签将通过JS动态填充 -->
             </div>
         </div>
 
         <!-- 收藏列表 -->
-        <div class="bookmark-container">
-            <div class="table-container">
-                <table class="bookmark-table">
+        <div class="bm-cnt">
+            <div class="tbl-cnt">
+                <table class="bm-tbl">
                     <thead>
                         <tr>
-                            <th class="bookmark-title-col">标题</th>
-                            <th class="bookmark-category-col">分类</th>
-                            <th class="bookmark-tags-col">标签</th>
-                            <th class="bookmark-time-col">更新时间</th>
+                            <th class="bm-title-col">标题</th>
+                            <th class="bm-cat-col">分类</th>
+                            <th class="bm-tag-col">标签</th>
+                            <th class="bm-time-col">更新时间</th>
                         </tr>
                     </thead>
-                    <tbody id="bookmark-list">
+                    <tbody id="bm-list">
                         <!-- 数据将通过JS动态填充 -->
                     </tbody>
                 </table>
             </div>
 
             <!-- 分页 -->
-            <div class="pagination-container">
-                <div class="pagination-info">
-                    显示 <span id="start-index">0</span> 到 <span id="end-index">0</span> 条，共 <span
-                        id="total-count">0</span> 条
+            <div class="pg-cnt">
+                <div class="pg-info">
+                    显示 <span id="start-idx">0</span> 到 <span id="end-idx">0</span> 条，共 <span id="total-cnt">0</span> 条
                 </div>
-                <div class="pagination-controls">
-                    <button id="prev-page" class="pagination-btn">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <div id="pagination-numbers" class="pagination-numbers"></div>
-                    <button id="next-page" class="pagination-btn">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
+                <div class="pg-ctrls">
+                    <!-- 分页按钮将通过JS动态填充 -->
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="container">
-            <p>© 2025 我的收藏站 | 备案号：粤ICP备12345678号</p>
-        </div>
+    <footer class="ft">
+        <p>版权所有 &copy; 2024</p>
     </footer>
-
-    <!-- 关键修改：添加type="module" -->
-    <script type="module" src="js/app.js"></script>
 </body>
 
 </html>
