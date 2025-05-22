@@ -1,6 +1,5 @@
 // 分页功能模块
 export const updatePagination = (totalPages, currentPage, callback) => {
-  // 生成分页按钮逻辑
   const paginationNumbers = document.getElementById('pagination-numbers');
   paginationNumbers.innerHTML = '';
 

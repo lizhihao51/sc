@@ -5,7 +5,7 @@ export const renderBookmarks = (bookmarks, listElement) => {
   listElement.innerHTML = '';
   if (bookmarks.length === 0) {
     listElement.innerHTML = `
-      <tr><td colspan="4" class="empty-state">...</td></tr>
+      <tr><td colspan="4" class="empty-state">没有找到匹配的收藏</td></tr>
     `;
     return;
   }

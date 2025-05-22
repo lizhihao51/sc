@@ -10,8 +10,8 @@ export const initSearch = (searchInput, searchSuggestions, updateListCallback) =
     }, 300);
   };
   searchInput.addEventListener('input', performSearch);
-};
 
-const showSuggestions = (query) => {
-  // 实现搜索建议逻辑（需依赖数据模块）
+  const showSuggestions = (query) => {
+    // 实现搜索建议逻辑（需依赖数据模块）
+  };
 };
