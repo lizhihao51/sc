@@ -1,0 +1,737 @@
+/* 基础样式 */
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: '微软雅黑', sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #f9fafb;
+}
+
+/* 布局结构 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.header {
+    background-color: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 50;
+    transition: all 0.3s ease;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.site-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.site-title i {
+    color: #3b82f6;
+    margin-right: 10px;
+}
+
+.site-subtitle { 
+    font-size: 14px;
+    color: #135df0;
+    margin-left: 15px;
+    display: none;
+} 
+/* 小介绍 */
+
+
+@media (min-width: 768px) {
+   .site-subtitle {
+        display: inline;
+    }
+}
+
+.mobile-menu-button {
+    border: none;
+    background: none;
+    color: #6b7280;
+    cursor: pointer;
+    display: block;
+}
+
+@media (min-width: 768px) {
+   .mobile-menu-button {
+        display: none;
+    }
+}
+
+
+.search-wrapper {
+    position: relative;
+}
+
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+.search-options {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+.search-options:hover {
+    color: #3b82f6;
+}
+
+.search-suggestions {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    margin-top: 5px;
+    background-color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 10;
+    display: none;
+}
+
+.search-suggestion {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-suggestion:hover {
+    background-color: #f3f4f6;
+}
+
+.suggestion-title {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.suggestion-desc {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.suggestion-meta {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+.highlight {
+    background-color: #fff3cd;
+}
+
+.main-content {
+    padding-top: 150px;
+    padding-bottom: 60px;
+}
+
+@media (min-width: 768px) {
+   .main-content {
+        padding-top: 120px;
+    }
+}
+
+.filter-container {
+    margin-bottom: 20px;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.filter-container::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-tags {
+    display: flex;
+    gap: 8px;
+    padding-bottom: 10px;
+    min-width: max-content;
+}
+
+.filter-btn {
+    padding: 6px 12px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #e5e7eb;
+    color: #4b5563;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover:not(.active) {
+    background-color: #d1d5db;
+}
+
+.filter-btn.active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.bookmark-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+.bookmark-time-cell{
+        font-size: 16px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.bookmark-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.bookmark-table th {
+    text-align: left;
+    padding: 12px 15px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6378a3;  
+    text-transform: uppercase;
+    background-color: #a1a1a159;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+/* 标题文字 */
+
+.bookmark-table td {
+    padding: 12px 15px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.bookmark-title-col {
+    width: 50%;
+}
+
+.bookmark-category-col {
+    width: 15%;
+}
+
+.bookmark-tags-col {
+    width: 20%;
+}
+
+.bookmark-time-col {
+    width: 15%;
+}
+
+.bookmark-item {
+    transition: background-color 0.2s ease;
+}
+
+.bookmark-item:hover {
+    background-color: #f9fafb;
+}
+
+.bookmark-title {
+    display: flex;
+    align-items: center;
+}
+
+.bookmark-link {
+    color: #3b82f6;
+    font-weight: 500;
+    text-decoration: none;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    position: relative;
+}
+
+.bookmark-link:hover {
+    color: #2563eb;
+}
+
+.bookmark-link:hover i {
+    opacity: 1;
+}
+
+.bookmark-link i {
+    font-size: 10px;
+    margin-left: 3px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.bookmark-desc {
+    font-size: 14px;
+    color: #4b5563;
+    margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bookmark-time {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.bookmark-time i {
+    margin-right: 5px;
+}
+
+.category-tag {
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.category-tech {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.category-design {
+    background-color: #ede9fe;
+    color: #5b21b6;
+}
+
+.category-tool {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.category-resource {
+    background-color: #ffedd5;
+    color: #92400e;
+}
+
+.category-study {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.category-default {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tag {
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.tag-frontend {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.tag-backend {
+    background-color: #e0e7ff;
+    color: #4f46e5;
+}
+
+.tag-ui {
+    background-color: #ede9fe;
+    color: #5b21b6;
+}
+
+.tag-ux {
+    background-color: #fce7f3;
+    color: #be185d;
+}
+
+.tag-css {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.tag-js {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.tag-python {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.tag-free {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.tag-tutorial {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.tag-code {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
+
+.tag-default {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
+
+.pagination-container {
+    padding: 15px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+@media (min-width: 768px) {
+   .pagination-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.pagination-info {
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: #f9fafb;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-number {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-number:hover:not(.active) {
+    background-color: #f9fafb;
+}
+
+.pagination-number.active {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.pagination-ellipsis {
+    padding: 6px 12px;
+    color: #9ca3af;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    margin-bottom: 16px;
+}
+
+.empty-icon i {
+    font-size: 24px;
+    color: #9ca3af;
+}
+
+.empty-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 8px;
+}
+
+.empty-message {
+    font-size: 14px;
+    color: #105cf5;
+}
+
+.loading-state {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.loading-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    margin-bottom: 16px;
+}
+
+.loading-icon i {
+    font-size: 24px;
+    color: #9ca3af;
+}
+
+.loading-message {
+    font-size: 18px;
+    font-weight: 500;
+    color: #4b5563;
+}
+
+.error-state {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.error-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #fee2e2;
+    margin-bottom: 16px;
+}
+
+.error-icon i {
+    font-size: 24px;
+    color: #ef4444;
+}
+
+.error-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ef4444;
+    margin-bottom: 8px;
+}
+
+.error-message {
+    font-size: 14px;
+    color: #dc2626;
+}
+
+footer {
+    background-color: white;
+    border-top: 1px solid #e5e7eb;
+    padding: 12px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+footer.fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+}
+
+footer.static {
+    position: static;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-pulse-slow {
+    animation: pulse 2s infinite;
+}
+/* 搜索框样式 */
+.search-container {
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+}
+
+@media (min-width: 500px) {
+    .search-container {
+        width: 33.333%;
+        margin-top: 0;
+    }
+}
+
+.search-wrapper {
+    position: relative;
+}
+
+/* 提高选择器优先级，避免使用 !important */
+.search-input {
+    width: 100%;
+    padding: 8px 35px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s ease;
+    
+    /* 新增样式 */
+    box-sizing: border-box; /* 防止内边距撑大尺寸 */
+    font-size: 1rem;      /* 明确字体大小 */
+}
+
+.search-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3)  !important;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+.search-options {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+.search-options:hover {
+    color: #3b82f6;
+}
+
+.search-suggestions {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    margin-top: 5px;
+    background-color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 10;
+    display: none;
+}
+
+.search-suggestion {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-suggestion:hover {
+    background-color: #f3f4f6;
+}
+
+.suggestion-title {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.suggestion-desc {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.suggestion-meta {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+.highlight {
+    background-color: #fff3cd;
+}

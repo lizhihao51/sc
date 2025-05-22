@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的收藏站 - 知识管理与灵感收集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="site-title">
+                        <i class="fa-solid fa-bookmark text-blue-500 mr-2"></i>F8の收藏站
+                    </h1>
+                    <p class="site-subtitle">整理你的数字灵感库，高效管理知识碎片</p>
+                </div>
+
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <i class="fa-solid fa-search search-icon"></i>
+                        <input type="text" id="search-input" class="search-input" placeholder="搜索收藏内容..." autocomplete="off">
+                        <div class="search-options">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        </div>
+                </div>
+                <div id="search-suggestions" class="search-suggestions hidden"></div>
+            </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content container">
+        <!-- 筛选标签 -->
+        <div class="filter-container">
+            <div class="filter-tags">
+                <button class="filter-btn active" data-filter="全部">全部</button>
+                <!-- 标签将通过JS动态填充 -->
+            </div>
+        </div>
+
+        <!-- 收藏列表 -->
+        <div class="bookmark-container">
+            <div class="table-container">
+                <table class="bookmark-table">
+                    <thead>
+                        <tr>
+                            <th class="bookmark-title-col">标题</th>
+                            <th class="bookmark-category-col">分类</th>
+                            <th class="bookmark-tags-col">标签</th>
+                            <th class="bookmark-time-col">更新时间</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookmark-list">
+                        <!-- 数据将通过JS动态填充 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    显示 <span id="start-index">0</span> 到 <span id="end-index">0</span> 条，共 <span id="total-count">0</span> 条
+                </div>
+                <div class="pagination-controls">
+                    <button id="prev-page" class="pagination-btn">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <div id="pagination-numbers" class="pagination-numbers"></div>
+                    <button id="next-page" class="pagination-btn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 我的收藏站 | 备案号：粤ICP备12345678号</p>
+        </div>
+    </footer>
+
+    <script>
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 从JSON文件加载数据
+            const fetchBookmarks = async () => {
+                try {
+                    const response = await fetch('bookmarks.json');
+                    if (!response.ok) {
+                        throw new Error(`HTTP错误! 状态: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('加载书签失败:', error);
+                    throw error; // 不再使用模拟数据，直接抛出错误
+                }
+            };
+
+            // 渲染收藏列表
+            const renderBookmarks = (bookmarks) => {
+                const listElement = document.getElementById('bookmark-list');
+                listElement.innerHTML = '';
+
+                if (bookmarks.length === 0) {
+                    listElement.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fa-solid fa-bookmark-o text-2xl"></i>
+                                </div>
+                                <p class="empty-title">没有找到匹配的收藏</p>
+                                <p class="empty-message">尝试使用不同的关键词或标签进行搜索</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                bookmarks.forEach((bookmark, index) => {
+                    const row = document.createElement('tr');
+                    row.className = 'bookmark-item';
+                    row.style.animationDelay = `${index * 50}ms`;
+                    
+                    // 计算时间差
+                    const timeDiff = calculateTimeDifference(bookmark.updatedAt);
+                    
+                    row.innerHTML = `
+                        <td class="bookmark-title-cell">
+                            <div class="bookmark-title">
+                                <a href="${bookmark.url}" target="_blank" class="bookmark-link">
+                                    ${bookmark.title}
+                                    <i class="fa-solid fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                            <div class="bookmark-desc">${bookmark.description}</div>
+                            <div class="bookmark-time">
+                                <i class="fa-solid fa-clock-o"></i> ${timeDiff}
+                            </div>
+                        </td>
+                        <td class="bookmark-category-cell">
+                            <span class="category-tag ${getCategoryClass(bookmark.category)}">
+                                ${bookmark.category}
+                            </span>
+                        </td>
+                        <td class="bookmark-tags-cell">
+                            <div class="tag-list">
+                                ${bookmark.tags.map(tag => `
+                                    <span class="tag ${getTagClass(tag)}">${tag}</span>
+                                `).join('')}
+                            </div>
+                        </td>
+                        <td class="bookmark-time-cell">
+                            ${formatDate(bookmark.updatedAt)}
+                        </td>
+                    `;
+                    
+                    listElement.appendChild(row);
+                });
+            };
+
+            // 初始化筛选标签
+            const initFilterTags = () => {
+                const filterContainer = document.querySelector('.filter-tags');
+                if (!filterContainer) {
+                    console.error('筛选标签容器不存在');
+                    return;
+                }
+                
+                // 清空现有标签（保留"全部"）
+                const allButton = filterContainer.querySelector('.filter-btn.active');
+                filterContainer.innerHTML = '';
+                filterContainer.appendChild(allButton);
+                
+                // 添加所有标签
+                const uniqueTags = [...new Set(allBookmarks.flatMap(bookmark => bookmark.tags))];
+                
+                uniqueTags.forEach(tag => {
+                    const button = document.createElement('button');
+                    button.className = 'filter-btn';
+                    button.textContent = tag;
+                    button.dataset.filter = tag;
+                    
+                    button.addEventListener('click', () => {
+                        // 移除所有按钮的活动状态
+                        document.querySelectorAll('.filter-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        
+                        // 添加当前按钮的活动状态
+                        button.classList.add('active');
+                        
+                        // 更新筛选条件
+                        currentFilter = tag;
+                        currentPage = 1;
+                        updateBookmarkList();
+                    });
+                    
+                    filterContainer.appendChild(button);
+                });
+                
+                // 为"全部"按钮添加点击事件
+                allButton.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    allButton.classList.add('active');
+                    
+                    currentFilter = '全部';
+                    currentPage = 1;
+                    updateBookmarkList();
+                });
+            };
+
+            // 格式化日期
+            const formatDate = (date) => {
+                if (typeof date === 'string') {
+                    date = new Date(date);
+                }
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                return date.toLocaleDateString('zh-CN', options);
+            };
+
+            // 计算时间差
+            const calculateTimeDifference = (dateString) => {
+                const now = new Date();
+                const updated = new Date(dateString);
+                const diffInMs = now - updated;
+                
+                // 转换为不同的时间单位
+                const diffInSeconds = Math.floor(diffInMs / 1000);
+                const diffInMinutes = Math.floor(diffInSeconds / 60);
+                const diffInHours = Math.floor(diffInMinutes / 60);
+                const diffInDays = Math.floor(diffInHours / 24);
+                const diffInWeeks = Math.floor(diffInDays / 7);
+                const diffInMonths = Math.floor(diffInDays / 30);
+                const diffInYears = Math.floor(diffInDays / 365);
+                
+                if (diffInYears > 0) {
+                    return `${diffInYears}年前`;
+                } else if (diffInMonths > 0) {
+                    return `${diffInMonths}个月前`;
+                } else if (diffInWeeks > 0) {
+                    return `${diffInWeeks}周前`;
+                } else if (diffInDays > 0) {
+                    return `${diffInDays}天前`;
+                } else if (diffInHours > 0) {
+                    return `${diffInHours}小时前`;
+                } else if (diffInMinutes > 0) {
+                    return `${diffInMinutes}分钟前`;
+                } else {
+                    return `${diffInSeconds}秒前`;
+                }
+            };
+
+            // 获取分类样式
+            const getCategoryClass = (category) => {
+                const categoryMap = {
+                    '技术': 'category-tech',
+                    '设计': 'category-design',
+                    '工具': 'category-tool',
+                    '资源': 'category-resource',
+                    '学习': 'category-study'
+                };
+                return categoryMap[category] || 'category-default';
+            };
+
+            // 获取标签样式
+            const getTagClass = (tag) => {
+                const tagMap = {
+                    '前端': 'tag-frontend',
+                    '后端': 'tag-backend',
+                    'UI': 'tag-ui',
+                    'UX': 'tag-ux',
+                    'CSS': 'tag-css',
+                    'JavaScript': 'tag-js',
+                    'Python': 'tag-python',
+                    '免费': 'tag-free',
+                    '教程': 'tag-tutorial',
+                    '代码': 'tag-code'
+                };
+                return tagMap[tag] || 'tag-default';
+            };
+
+            // 初始化搜索功能（带防抖）
+            const initSearch = () => {
+                const searchInput = document.getElementById('search-input');
+                const searchSuggestions = document.getElementById('search-suggestions');
+                let searchTimeout = null;
+                
+                const performSearch = () => {
+                    const query = searchInput.value.toLowerCase().trim();
+                    
+                    // 显示搜索建议
+                    if (query.length >= 2) {
+                        showSearchSuggestions(query);
+                    } else {
+                        searchSuggestions.classList.add('hidden');
+                    }
+                    
+                    // 延迟执行搜索，实现防抖
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        currentSearchQuery = query;
+                        currentPage = 1; // 重置页码
+                        updateBookmarkList();
+                    }, 300); // 300ms延迟
+                };
+                
+                searchInput.addEventListener('input', performSearch);
+                
+                // 点击其他区域关闭搜索建议
+                document.addEventListener('click', (e) => {
+                    if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+                        searchSuggestions.classList.add('hidden');
+                    }
+                });
+            };
+
+            // 显示搜索建议
+            const showSearchSuggestions = (query) => {
+                const searchSuggestions = document.getElementById('search-suggestions');
+                searchSuggestions.innerHTML = '';
+                
+                // 过滤匹配的书签
+                const matchedBookmarks = allBookmarks.filter(bookmark => 
+                    bookmark.title.toLowerCase().includes(query) ||
+                    bookmark.description.toLowerCase().includes(query) ||
+                    bookmark.category.toLowerCase().includes(query) ||
+                    bookmark.tags.some(tag => tag.toLowerCase().includes(query))
+                );
+                
+                // 只显示前5个结果
+                const suggestions = matchedBookmarks.slice(0, 5);
+                
+                if (suggestions.length > 0) {
+                    suggestions.forEach(bookmark => {
+                        const suggestion = document.createElement('div');
+                        suggestion.className = 'search-suggestion';
+                        
+                        // 高亮匹配的文本
+                        let highlightedTitle = bookmark.title;
+                        if (query) {
+                            const regex = new RegExp(`(${query})`, 'gi');
+                            highlightedTitle = highlightedTitle.replace(regex, '<span class="highlight">$1</span>');
+                        }
+                        
+                        suggestion.innerHTML = `
+                            <div class="suggestion-title">${highlightedTitle}</div>
+                            <div class="suggestion-desc">${bookmark.description.substring(0, 40)}${bookmark.description.length > 40 ? '...' : ''}</div>
+                            <div class="suggestion-meta">${bookmark.category} • ${bookmark.tags.join(', ')}</div>
+                        `;
+                        
+                        suggestion.addEventListener('click', () => {
+                            document.getElementById('search-input').value = bookmark.title;
+                            searchSuggestions.classList.add('hidden');
+                            currentSearchQuery = bookmark.title.toLowerCase();
+                            currentPage = 1;
+                            updateBookmarkList();
+                        });
+                        
+                        searchSuggestions.appendChild(suggestion);
+                    });
+                    
+                    searchSuggestions.classList.remove('hidden');
+                } else {
+                    searchSuggestions.classList.add('hidden');
+                }
+            };
+
+            // 更新书签列表
+            const updateBookmarkList = () => {
+                // 应用筛选和搜索
+                let filteredBookmarks = allBookmarks.filter(bookmark => {
+                    // 应用筛选
+                    const matchesFilter = currentFilter === '全部' || 
+                                         bookmark.tags.includes(currentFilter);
+                    
+                    // 应用搜索
+                    const searchTerm = currentSearchQuery.toLowerCase();
+                    const matchesSearch = 
+                        bookmark.title.toLowerCase().includes(searchTerm) ||
+                        bookmark.description.toLowerCase().includes(searchTerm) ||
+                        bookmark.category.toLowerCase().includes(searchTerm) ||
+                        bookmark.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+                    
+                    return matchesFilter && matchesSearch;
+                });
+                
+                // 获取当前页的项目数（根据屏幕尺寸）
+                const itemsPerPage = window.innerWidth < 768 ? 10 : 5;
+                
+                // 计算总页数
+                const totalPages = Math.max(1, Math.ceil(filteredBookmarks.length / itemsPerPage));
+                
+                // 确保当前页在有效范围内
+                if (currentPage > totalPages) {
+                    currentPage = totalPages;
+                }
+                
+                // 计算当前页的数据范围
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = Math.min(startIndex + itemsPerPage, filteredBookmarks.length);
+                
+                // 获取当前页的数据
+                const currentPageData = filteredBookmarks.slice(startIndex, endIndex);
+                
+                // 渲染书签
+                renderBookmarks(currentPageData);
+                
+                // 更新分页信息
+                document.getElementById('start-index').textContent = startIndex + 1;
+                document.getElementById('end-index').textContent = endIndex;
+                document.getElementById('total-count').textContent = filteredBookmarks.length;
+                
+                // 更新分页控件
+                updatePaginationControls(totalPages);
+                
+                // 更新页面标题
+                document.title = `我的收藏站 - ${currentFilter} (${filteredBookmarks.length}条)`;
+            };
+
+            // 更新分页控件
+            const updatePaginationControls = (totalPages) => {
+                const paginationNumbers = document.getElementById('pagination-numbers');
+                const prevButton = document.getElementById('prev-page');
+                const nextButton = document.getElementById('next-page');
+                
+                // 清空现有页码
+                paginationNumbers.innerHTML = '';
+                
+                // 生成分页按钮
+                const maxVisiblePages = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                let endPage = startPage + maxVisiblePages - 1;
+                
+                if (endPage > totalPages) {
+                    endPage = totalPages;
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                }
+                
+                // 添加第一页按钮（如果需要）
+                if (startPage > 1) {
+                    addPageButton(1);
+                    if (startPage > 2) {
+                        addEllipsis();
+                    }
+                }
+                
+                // 添加可见页码
+                for (let i = startPage; i <= endPage; i++) {
+                    addPageButton(i);
+                }
+                
+                // 添加最后一页按钮（如果需要）
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        addEllipsis();
+                    }
+                    addPageButton(totalPages);
+                }
+                
+                // 更新按钮状态
+                prevButton.disabled = currentPage === 1;
+                nextButton.disabled = currentPage === totalPages;
+                
+                // 为按钮添加点击事件
+                prevButton.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updateBookmarkList();
+                    }
+                });
+                
+                nextButton.addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        updateBookmarkList();
+                    }
+                });
+                
+                // 辅助函数：添加页码按钮
+                function addPageButton(pageNum) {
+                    const pageNumber = document.createElement('button');
+                    pageNumber.className = `pagination-number ${pageNum === currentPage ? 'active' : ''}`;
+                    pageNumber.textContent = pageNum;
+                    
+                    pageNumber.addEventListener('click', () => {
+                        currentPage = pageNum;
+                        updateBookmarkList();
+                    });
+                    
+                    paginationNumbers.appendChild(pageNumber);
+                }
+                
+                // 辅助函数：添加省略号
+                function addEllipsis() {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'pagination-ellipsis';
+                    ellipsis.textContent = '...';
+                    paginationNumbers.appendChild(ellipsis);
+                }
+            };
+
+            // 初始化应用
+            const initApp = async () => {
+                try {
+                    // 显示加载状态
+                    const bookmarkList = document.getElementById('bookmark-list');
+                    if (!bookmarkList) {
+                        throw new Error('找不到书签列表容器');
+                    }
+                    
+                    bookmarkList.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="loading-state">
+                                <div class="loading-icon">
+                                    <i class="fa-solid fa-spinner fa-spin text-2xl"></i>
+                                </div>
+                                <p class="loading-message">正在获取你的收藏列表</p>
+                            </td>
+                        </tr>
+                    `;
+                    
+                    // 获取数据
+                    allBookmarks = await fetchBookmarks();
+                    
+                    // 初始渲染
+                    initFilterTags();
+                    updateBookmarkList('全部');
+                    
+                    // 初始化交互功能
+                    initSearch();
+                    initScrollEffects();
+                    initResponsiveLayout();
+                    
+                    console.log('应用初始化完成');
+                } catch (error) {
+                    console.error('加载收藏失败:', error);
+                    
+                    const bookmarkList = document.getElementById('bookmark-list');
+                    if (bookmarkList) {
+                        bookmarkList.innerHTML = `
+                            <tr>
+                                <td colspan="4" class="error-state">
+                                    <div class="error-icon">
+                                        <i class="fa-solid fa-exclamation-triangle text-2xl"></i>
+                                    </div>
+                                    <p class="error-title">加载收藏失败</p>
+                                    <p class="error-message">错误详情: ${error.message}</p>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                }
+            };
+
+            // 初始化滚动效果
+            const initScrollEffects = () => {
+                const header = document.querySelector('header');
+                let lastScrollY = window.scrollY;
+                
+                window.addEventListener('scroll', () => {
+                    const currentScrollY = window.scrollY;
+                    
+                    // 滚动时添加阴影
+                    if (currentScrollY > 10) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                    
+                    // 向上滚动时显示导航栏，向下滚动时隐藏（超过一定距离）
+                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                        header.style.transform = 'translateY(-100%)';
+                    } else {
+                        header.style.transform = 'translateY(0)';
+                    }
+                    
+                    lastScrollY = currentScrollY;
+                });
+            };
+
+            // 初始化响应式布局
+            const initResponsiveLayout = () => {
+                // 窗口大小改变时重新计算分页
+                window.addEventListener('resize', () => {
+                    updateBookmarkList();
+                });
+            };
+
+            // 全局变量
+            let allBookmarks = [];
+            let currentFilter = '全部';
+            let currentSearchQuery = '';
+            let currentPage = 1;
+
+            // 启动应用
+            initApp();
+        });
+    </script>
+</body>
+</html>

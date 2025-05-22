@@ -1,0 +1,93 @@
+[
+    {
+        "id": 1,
+        "title": "MDN Web Docs",
+        "url": "https://developer.mozilla.org/",
+        "category": "技术",
+        "tags": ["前端", "文档"],
+        "updatedAt": "2025-05-15",
+        "description": "MDN是学习Web开发的权威资源，提供HTML、CSS、JavaScript等技术的详细文档和教程。"
+    },
+    {
+        "id": 2,
+        "title": "Tailwind CSS",
+        "url": "https://tailwindcss.com/",
+        "category": "技术",
+        "tags": ["CSS", "框架"],
+        "updatedAt": "2025-05-18",
+        "description": "一个功能类优先的CSS框架，允许直接在HTML中使用预定义的类来构建界面，提高开发效率。"
+    },
+    {
+        "id": 3,
+        "title": "Dribbble",
+        "url": "https://dribbble.com/",
+        "category": "设计",
+        "tags": ["UI", "灵感"],
+        "updatedAt": "2025-05-10",
+        "description": "全球设计师展示和发现创意作品的平台，提供丰富的UI设计灵感和趋势参考。"
+    },
+    {
+        "id": 4,
+        "title": "GitHub",
+        "url": "https://github.com/",
+        "category": "技术",
+        "tags": ["代码托管", "开源"],
+        "updatedAt": "2025-05-20",
+        "description": "全球最大的代码托管平台，开发者可以分享、协作和发现开源项目，是程序员的必备工具。"
+    },
+    {
+        "id": 5,
+        "title": "Figma",
+        "url": "https://www.figma.com/",
+        "category": "设计",
+        "tags": ["UI设计", "协作"],
+        "updatedAt": "2025-05-19",
+        "description": "一款强大的基于云端的UI设计工具，支持团队实时协作，是现代UI/UX设计师的首选工具。"
+    },
+    {
+        "id": 6,
+        "title": "Stack Overflow",
+        "url": "https://stackoverflow.com/",
+        "category": "技术",
+        "tags": ["问答", "社区"],
+        "updatedAt": "2025-05-17",
+        "description": "全球最大的程序员问答社区，开发者可以在这里提问、分享知识和解决编程中遇到的问题。"
+    },
+    {
+        "id": 7,
+        "title": "Unsplash",
+        "url": "https://unsplash.com/",
+        "category": "资源",
+        "tags": ["图片", "免费"],
+        "updatedAt": "2025-05-16",
+        "description": "提供高质量的免费图片资源，所有图片均可自由使用，适合用于网站、应用和设计项目。"
+    },
+    {
+        "id": 8,
+        "title": "VS Code",
+        "url": "https://code.visualstudio.com/",
+        "category": "工具",
+        "tags": ["编辑器", "开发"],
+        "updatedAt": "2025-05-14",
+        "description": "一款轻量级但功能强大的代码编辑器，支持多种编程语言和丰富的扩展，是开发者的热门选择。"
+    },
+    {
+        "id": 9,
+        "title": "Canva",
+        "url": "https://www.canva.com/",
+        "category": "设计",
+        "tags": ["设计工具", "简单"],
+        "updatedAt": "2025-05-13",
+        "description": "一款简单易用的在线设计工具，提供丰富的模板和素材，适合非专业设计师创建各种设计作品。"
+    },
+    {
+        "id": 10,
+        "title": "Regex101",
+        "url": "https://regex101.com/",
+        "category": "工具",
+        "tags": ["正则表达式", "测试"],
+        "updatedAt": "2025-05-12",
+        "description": "一个在线正则表达式测试工具，帮助开发者创建、测试和调试正则表达式，提供实时反馈和解释。"
+    }
+]
+    
