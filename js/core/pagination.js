@@ -1,11 +1,14 @@
 // 分页功能模块
 export const updatePagination = (totalPages, currentPage, callback) => {
-    const paginationNumbers = document.getElementById('pagination-numbers');
+    // 修改获取元素的 id 为 pg-ctrls
+    const paginationNumbers = document.getElementById('pg-ctrls'); 
     const prevButton = document.getElementById('prev-page');
     const nextButton = document.getElementById('next-page');
 
     // 清空现有页码
-    paginationNumbers.innerHTML = '';
+    if (paginationNumbers) {
+        paginationNumbers.innerHTML = '';
+    }
 
     // 生成分页按钮
     const maxVisiblePages = 5;
@@ -39,23 +42,31 @@ export const updatePagination = (totalPages, currentPage, callback) => {
     }
 
     // 更新按钮状态
-    prevButton.disabled = currentPage === 1;
-    nextButton.disabled = currentPage === totalPages;
+    if (prevButton) {
+        prevButton.disabled = currentPage === 1;
+    }
+    if (nextButton) {
+        nextButton.disabled = currentPage === totalPages;
+    }
 
     // 为按钮添加点击事件
-    prevButton.addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            callback(currentPage);
-        }
-    });
+    if (prevButton) {
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                callback(currentPage);
+            }
+        });
+    }
 
-    nextButton.addEventListener('click', () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            callback(currentPage);
-        }
-    });
+    if (nextButton) {
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                callback(currentPage);
+            }
+        });
+    }
 
     // 辅助函数：添加页码按钮
     function addPageButton(pageNum) {
@@ -67,7 +78,9 @@ export const updatePagination = (totalPages, currentPage, callback) => {
             callback(pageNum);
         });
 
-        paginationNumbers.appendChild(pageNumber);
+        if (paginationNumbers) {
+            paginationNumbers.appendChild(pageNumber);
+        }
     }
 
     // 辅助函数：添加省略号
@@ -75,6 +88,9 @@ export const updatePagination = (totalPages, currentPage, callback) => {
         const ellipsis = document.createElement('span');
         ellipsis.className = 'pagination-ellipsis';
         ellipsis.textContent = '...';
-        paginationNumbers.appendChild(ellipsis);
+
+        if (paginationNumbers) {
+            paginationNumbers.appendChild(ellipsis);
+        }
     }
 };

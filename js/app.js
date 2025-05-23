@@ -17,8 +17,8 @@ const initApp = async () => {
     try {
         allbms = await fetchbms();
         const listElement = document.getElementById('bm-list');
-        const searchInput = document.getElementById('search-input');
-        const searchSuggestions = document.getElementById('search-suggestions');
+        const searchInput = document.getElementById('sch-inp');
+        const searchSuggestions = document.getElementById('sch-sugg');
 
         // 初始渲染
         updatebmList();
@@ -80,9 +80,10 @@ const updatebmList = () => {
         updatebmList();
     });
 
-    document.getElementById('start-index').textContent = startIndex + 1;
-    document.getElementById('end-index').textContent = endIndex;
-    document.getElementById('total-count').textContent = filteredbms.length;
+    // 修改元素 id
+    document.getElementById('start-idx').textContent = startIndex + 1;
+    document.getElementById('end-idx').textContent = endIndex;
+    document.getElementById('total-cnt').textContent = filteredbms.length;
 };
 
 // 启动应用

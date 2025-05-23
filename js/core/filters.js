@@ -1,7 +1,7 @@
 // 筛选功能模块
 export const initFilterButtons = (allbms, callback) => {
-    const filterContainer = document.querySelector('.filter-tags');
-    const allButton = document.querySelector('.filter-btn[data-filter="全部"]');
+    const filterContainer = document.querySelector('.flt-tags');
+    const allButton = document.querySelector('.flt-btn[data-filter="全部"]');
 
     // 获取所有标签
     const allTags = new Set();
@@ -12,12 +12,12 @@ export const initFilterButtons = (allbms, callback) => {
     // 创建筛选按钮
     allTags.forEach(tag => {
         const button = document.createElement('button');
-        button.className = 'filter-btn';
+        button.className = 'flt-btn';
         button.dataset.filter = tag;
         button.textContent = tag;
 
         button.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
+            document.querySelectorAll('.flt-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             button.classList.add('active');
@@ -30,7 +30,7 @@ export const initFilterButtons = (allbms, callback) => {
 
     // 为"全部"按钮添加点击事件
     allButton.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(btn => {
+        document.querySelectorAll('.flt-btn').forEach(btn => {
             btn.classList.remove('active');
         });
         allButton.classList.add('active');

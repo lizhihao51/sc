@@ -1,7 +1,7 @@
 // 从JSON文件获取书签数据
 export const fetchbms = async () => {
     try {
-        const response = await fetch('bms.json');
+        const response = await fetch('bookmarks.json');
         if (!response.ok) {
             throw new Error('无法获取书签数据');
         }
