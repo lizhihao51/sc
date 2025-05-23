@@ -80,7 +80,7 @@ const updatebmList = () => {
         updatebmList();
     });
 
-    // 修改元素 id
+    // 修正元素 ID
     document.getElementById('start-idx').textContent = startIndex + 1;
     document.getElementById('end-idx').textContent = endIndex;
     document.getElementById('total-cnt').textContent = filteredbms.length;

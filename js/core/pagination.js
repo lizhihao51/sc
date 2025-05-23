@@ -1,14 +1,30 @@
 // 分页功能模块
 export const updatePagination = (totalPages, currentPage, callback) => {
-    // 修改获取元素的 id 为 pg-ctrls
-    const paginationNumbers = document.getElementById('pg-ctrls'); 
-    const prevButton = document.getElementById('prev-page');
-    const nextButton = document.getElementById('next-page');
+    const paginationContainer = document.querySelector('.pg-ctrls');
+    // 清空现有内容
+    paginationContainer.innerHTML = '';
+
+    // 创建上一页按钮
+    const prevButton = document.createElement('button');
+    prevButton.id = 'prev-page';
+    prevButton.textContent = '上一页';
+    prevButton.className = 'pg-btn';
+    paginationContainer.appendChild(prevButton);
+
+    // 创建页码容器
+    const paginationNumbers = document.createElement('div');
+    paginationNumbers.id = 'pagination-numbers';
+    paginationContainer.appendChild(paginationNumbers);
+
+    // 创建下一页按钮
+    const nextButton = document.createElement('button');
+    nextButton.id = 'next-page';
+    nextButton.textContent = '下一页';
+    nextButton.className = 'pg-btn';
+    paginationContainer.appendChild(nextButton);
 
     // 清空现有页码
-    if (paginationNumbers) {
-        paginationNumbers.innerHTML = '';
-    }
+    paginationNumbers.innerHTML = '';
 
     // 生成分页按钮
     const maxVisiblePages = 5;
@@ -42,45 +58,36 @@ export const updatePagination = (totalPages, currentPage, callback) => {
     }
 
     // 更新按钮状态
-    if (prevButton) {
-        prevButton.disabled = currentPage === 1;
-    }
-    if (nextButton) {
-        nextButton.disabled = currentPage === totalPages;
-    }
+    prevButton.disabled = currentPage === 1;
+    nextButton.disabled = currentPage === totalPages;
 
     // 为按钮添加点击事件
-    if (prevButton) {
-        prevButton.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                callback(currentPage);
-            }
-        });
-    }
+    prevButton.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            callback(currentPage);
+        }
+    });
 
-    if (nextButton) {
-        nextButton.addEventListener('click', () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                callback(currentPage);
-            }
-        });
-    }
+    nextButton.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            callback(currentPage);
+        }
+    });
 
     // 辅助函数：添加页码按钮
     function addPageButton(pageNum) {
         const pageNumber = document.createElement('button');
         pageNumber.className = `pagination-number ${pageNum === currentPage ? 'active' : ''}`;
-        pageNumber.textContent = pageNum;
+        // 将页码数字替换为空字符串
+        pageNumber.textContent = '';
 
         pageNumber.addEventListener('click', () => {
             callback(pageNum);
         });
 
-        if (paginationNumbers) {
-            paginationNumbers.appendChild(pageNumber);
-        }
+        paginationNumbers.appendChild(pageNumber);
     }
 
     // 辅助函数：添加省略号
@@ -88,9 +95,6 @@ export const updatePagination = (totalPages, currentPage, callback) => {
         const ellipsis = document.createElement('span');
         ellipsis.className = 'pagination-ellipsis';
         ellipsis.textContent = '...';
-
-        if (paginationNumbers) {
-            paginationNumbers.appendChild(ellipsis);
-        }
+        paginationNumbers.appendChild(ellipsis);
     }
 };
