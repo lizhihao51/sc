@@ -30,9 +30,9 @@ export const initResponsiveLayout = () => {
     window.addEventListener('resize', () => {
         // 这里调用更新书签列表的函数
         // 由于函数定义在app.js中，这里可以通过事件触发或者直接调用
-        // 为了简单起见，假设在全局作用域中有一个updateBookmarkList函数
-        if (typeof updateBookmarkList === 'function') {
-            updateBookmarkList();
+        // 为了简单起见，假设在全局作用域中有一个updateList函数
+        if (typeof updatebmList === 'function') {
+            updatebmList();
         }
     });
 };

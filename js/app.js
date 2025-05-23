@@ -1,13 +1,13 @@
 // 应用入口，整合所有模块
-import { fetchBookmarks } from './core/dataService.js';
-import { renderBookmarks } from './uiRenderer.js';
+import { fetchbms } from './core/dataService.js';
+import { renderbms } from './uiRenderer.js';
 import { initSearch } from './core/search.js';
 import { updatePagination } from './core/pagination.js';
 import { initFilterButtons } from './core/filters.js';
 import { initScrollEffects, initResponsiveLayout } from './script.js';
 
 // 全局状态
-let allBookmarks = [];
+let allbms = [];
 let currentPage = 1;
 let currentFilter = '全部';
 let currentSearchQuery = '';
@@ -15,24 +15,24 @@ let currentSearchQuery = '';
 // 初始化应用
 const initApp = async () => {
     try {
-        allBookmarks = await fetchBookmarks();
-        const listElement = document.getElementById('bookmark-list');
+        allbms = await fetchbms();
+        const listElement = document.getElementById('bm-list');
         const searchInput = document.getElementById('search-input');
         const searchSuggestions = document.getElementById('search-suggestions');
 
         // 初始渲染
-        updateBookmarkList();
+        updatebmList();
 
         // 初始化交互功能
         initSearch(searchInput, searchSuggestions, (query) => {
             currentSearchQuery = query;
             currentPage = 1;
-            updateBookmarkList();
+            updatebmList();
         });
-        initFilterButtons(allBookmarks, (filter) => {
+        initFilterButtons(allbms, (filter) => {
             currentFilter = filter;
             currentPage = 1;
-            updateBookmarkList();
+            updatebmList();
         });
         initScrollEffects();
         initResponsiveLayout();
@@ -42,47 +42,47 @@ const initApp = async () => {
 };
 
 // 更新书签列表
-const updateBookmarkList = () => {
+const updatebmList = () => {
     // 应用筛选和搜索
-    let filteredBookmarks = allBookmarks.filter(bookmark => {
+    let filteredbms = allbms.filter(bm => {
         // 应用筛选
         const matchesFilter = currentFilter === '全部' ||
-            bookmark.category === currentFilter ||
-            bookmark.tags.includes(currentFilter);
+            bm.category === currentFilter ||
+            bm.tags.includes(currentFilter);
 
         // 应用搜索
         const searchTerm = currentSearchQuery.toLowerCase();
         const matchesSearch =
-            bookmark.title.toLowerCase().includes(searchTerm) ||
-            bookmark.category.toLowerCase().includes(searchTerm) ||
-            bookmark.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+            bm.title.toLowerCase().includes(searchTerm) ||
+            bm.category.toLowerCase().includes(searchTerm) ||
+            bm.tags.some(tag => tag.toLowerCase().includes(searchTerm));
 
         return matchesFilter && matchesSearch;
     });
 
     const itemsPerPage = window.innerWidth < 768 ? 10 : 5;
-    const totalPages = Math.max(1, Math.ceil(filteredBookmarks.length / itemsPerPage));
+    const totalPages = Math.max(1, Math.ceil(filteredbms.length / itemsPerPage));
 
     if (currentPage > totalPages) {
         currentPage = totalPages;
     }
 
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = Math.min(startIndex + itemsPerPage, filteredBookmarks.length);
+    const endIndex = Math.min(startIndex + itemsPerPage, filteredbms.length);
 
-    const currentPageData = filteredBookmarks.slice(startIndex, endIndex);
+    const currentPageData = filteredbms.slice(startIndex, endIndex);
 
-    const listElement = document.getElementById('bookmark-list');
-    renderBookmarks(currentPageData, listElement);
+    const listElement = document.getElementById('bm-list');
+    renderbms(currentPageData, listElement);
 
     updatePagination(totalPages, currentPage, (page) => {
         currentPage = page;
-        updateBookmarkList();
+        updatebmList();
     });
 
     document.getElementById('start-index').textContent = startIndex + 1;
     document.getElementById('end-index').textContent = endIndex;
-    document.getElementById('total-count').textContent = filteredBookmarks.length;
+    document.getElementById('total-count').textContent = filteredbms.length;
 };
 
 // 启动应用

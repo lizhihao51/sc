@@ -1,12 +1,12 @@
 // 筛选功能模块
-export const initFilterButtons = (allBookmarks, callback) => {
+export const initFilterButtons = (allbms, callback) => {
     const filterContainer = document.querySelector('.filter-tags');
     const allButton = document.querySelector('.filter-btn[data-filter="全部"]');
 
     // 获取所有标签
     const allTags = new Set();
-    allBookmarks.forEach(bookmark => {
-        bookmark.tags.forEach(tag => allTags.add(tag));
+    allbms.forEach(bm => {
+        bm.tags.forEach(tag => allTags.add(tag));
     });
 
     // 创建筛选按钮
