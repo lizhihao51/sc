@@ -275,6 +275,9 @@ body, html {
     font-weight: 500;
     display: inline-block;
 }
+.cat-tag{
+    font-size: 14px;
+}
 
 .cat-tech, .tag-frontend, .tag-css {
     background-color: var(--tag-tech-bg);
